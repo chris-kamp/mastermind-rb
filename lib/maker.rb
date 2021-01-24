@@ -15,8 +15,27 @@ class Maker
     code
   end
 
-  def hint(guess); end
+  def hint(guess, code)
+    hint = []
+    remaining_guesses = []
+    remaining_code = []
+    guess.each_with_index do |pin, index|
+      if pin == code[index]
+        hint.push('B')
+      else
+        remaining_guesses.push(pin)
+        remaining_code.push(code[index])
+      end
+    end
+    remaining_guesses.each do |guess_item|
+      if remaining_code.include?(guess_item)
+        hint.push('W')
+        remaining_code.slice!(remaining_code.index(guess_item))
+      end
+    end
+    hint
+  end
 end
 
-maker = Maker.new
-p maker.code
+# maker = Maker.new
+# p maker.code
