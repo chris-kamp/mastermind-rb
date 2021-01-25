@@ -17,20 +17,21 @@ class Maker
 
   def hint(guess, code)
     hint = []
-    remaining_guesses = []
-    remaining_code = []
+    unmatched_guesses = []
+    unmatched_code = []
+
     guess.each_with_index do |pin, index|
       if pin == code[index]
         hint.push('B')
       else
-        remaining_guesses.push(pin)
-        remaining_code.push(code[index])
+        unmatched_guesses.push(pin)
+        unmatched_code.push(code[index])
       end
     end
-    remaining_guesses.each do |guess_item|
-      if remaining_code.include?(guess_item)
+    unmatched_guesses.each do |pin|
+      if unmatched_code.include?(pin)
         hint.push('W')
-        remaining_code.slice!(remaining_code.index(guess_item))
+        unmatched_code.slice!(unmatched_code.index(pin))
       end
     end
     hint
