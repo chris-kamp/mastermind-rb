@@ -49,6 +49,9 @@ class GameController
         "\n------------------\nMAKER WINS!\n------------------\n\n",
         :green,
       )
+      @display.print_colorised_text("The code was:\n", :green)
+      @display.print_colorised(@maker.code)
+      print "\n"
     else
       @display.print_colorised_text("#{@turns} guesses remaining\n", :red)
     end
