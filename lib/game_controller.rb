@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 require './lib/maker'
 require './lib/breaker'
+require './lib/display'
 
 # game flow controller
 class GameController
   def initialize
     @maker = Maker.new
     @breaker = Breaker.new
+    @display = Display.new
     @turns = 8
     @game_over = false
   end
@@ -19,7 +21,7 @@ class GameController
     # Needs to change to a display.hint method
     hint = @maker.hint(@breaker.guess_code, @maker.code)
     @turns -= 1
-    p hint
+    @display.print_colorised(hint)
     post_turn(hint)
   end
 
