@@ -1,14 +1,20 @@
 # frozen_string_literal: true
 
+require './lib/display'
+
 # Human player or AI who tries to break the code
 class Breaker
+  def initialize
+    @display = Display.new
+  end
+
   def guess_code
-    puts 'Try to guess the code: '
+    @display.print_colorised_text('Try to guess the code: ', :green)
     guess = sanitise_guess(gets)
 
     # Keep prompting until valid guess received
     until valid_guess?(guess)
-      puts "Invalid guess. Try again.\n"
+      @display.print_colorised_text("Invalid guess. Try again.\n", :red)
       guess = sanitise_guess(gets)
     end
 

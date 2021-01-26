@@ -19,9 +19,10 @@ class GameController
 
   def advance_turn
     # Needs to change to a display.hint method
-    hint = @maker.hint(@breaker.guess_code, @maker.code)
+    guess = @breaker.guess_code
+    hint = @maker.hint(guess, @maker.code)
+    @display.display_turn(guess, hint)
     @turns -= 1
-    @display.print_colorised(hint)
     post_turn(hint)
   end
 
@@ -42,7 +43,7 @@ class GameController
       @game_over = true
       p 'Maker wins'
     else
-      p "#{@turns} guesses remaining"
+      @display.print_colorised_text("#{@turns} guesses remaining\n", :red)
     end
   end
 
