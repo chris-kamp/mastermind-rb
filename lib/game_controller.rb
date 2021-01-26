@@ -39,10 +39,10 @@ class GameController
   def post_turn(hint)
     if (breaker_won?(hint))
       @game_over = true
-      p 'Breaker wins'
+      @display.print_colorised_text("Breaker wins\n", :green)
     elsif (out_of_turns?)
       @game_over = true
-      p 'Maker wins'
+      @display.print_colorised_text("Maker wins\n", :green)
     else
       @display.print_colorised_text("#{@turns} guesses remaining\n", :red)
     end
@@ -50,12 +50,15 @@ class GameController
 
   # Ask player whether to play again
   def quit?
-    p 'Do you want to play again? Y / N'
+    @display.print_colorised_text("Do you want to play again? Y / N\n", :green)
     yes = 'y'
     no = 'n'
     answer = gets.chomp.downcase
     until (answer == yes || answer == no)
-      p "I didn't quite catch that. Do you want to play again? Y / N"
+      @display.print_colorised_text(
+        "I didn't quite catch that. Do you want to play again? Y / N\n",
+        :green,
+      )
       answer = gets.chomp.downcase
     end
     answer == no
