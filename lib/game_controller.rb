@@ -14,6 +14,7 @@ class GameController
   end
 
   def game_loop
+    @display.display_intro
     advance_turn until @game_over
   end
 
