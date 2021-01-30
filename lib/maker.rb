@@ -4,38 +4,18 @@
 class Maker
   attr_reader :code
 
-  def initialize
+  def initialize(ai_controller)
     @code = generate_code
+    @ai_controller = ai_controller
   end
 
   # generate a code of length 4 with 6 options
   def generate_code
-    code = []
-    4.times { code.push rand(1..6) }
-    code
+    @ai_controller.generate_code
   end
 
   # Given a guess and a code, generate a hint for the guesser
-  def hint(guess, code)
-    hint = []
-    unmatched_guesses = []
-    unmatched_code = []
-
-    guess.each_with_index do |pin, index|
-      if pin == code[index]
-        hint.push('B')
-      else
-        unmatched_guesses.push(pin)
-        unmatched_code.push(code[index])
-      end
-    end
-    unmatched_guesses.each do |pin|
-      if unmatched_code.include?(pin)
-        hint.push('W')
-        unmatched_code.slice!(unmatched_code.index(pin))
-      end
-    end
-    (4 - hint.length).times { hint.push 'X' }
-    hint
+  def hint(guess)
+    @ai_controller.hint(guess, @code)
   end
 end
