@@ -22,7 +22,10 @@ class Maker
 
   # Allow a human player to select a code
   def human_select_code
-    @input.prompt_code(false)
+    @input.prompt_code(
+      @display.text_content[:code_prompt],
+      @display.text_content[:code_reprompt],
+    )
   end
 
   # Given a guess and a code, generate a hint for the guesser

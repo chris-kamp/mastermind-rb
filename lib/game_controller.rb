@@ -11,14 +11,21 @@ class GameController
     @ai_controller = AIController.new
     @input = Input.new
     @display = Display.new
-    @breaker = Breaker.new(true, @input, @ai_controller, @display)
-    @maker = Maker.new(false, @input, @ai_controller, @display)
+    @breaker = Breaker.new(false, @input, @ai_controller, @display)
+    @maker = Maker.new(true, @input, @ai_controller, @display)
     @turns = 8
     @game_over = false
   end
 
   def game_loop
-    @display.display_intro
+    @display.intro
+    if @input.yes_no(
+         @display.text_content[:intro_prompt],
+         @display.text_content[:intro_reprompt],
+       )
+      @display.instructions
+    end
+    @display.game_start
     @maker.select_code
     advance_turn until @game_over
   end
@@ -44,28 +51,21 @@ class GameController
   def post_turn(hint)
     if (breaker_won?(hint))
       @game_over = true
-      @display.print_colorised_text(
-        "\n------------------\nBREAKER WINS!\n------------------\n\n",
-        :green,
-      )
+      @display.game_over('BREAKER')
     elsif (out_of_turns?)
       @game_over = true
-      @display.print_colorised_text(
-        "\n------------------\nMAKER WINS!\n------------------\n\n",
-        :green,
-      )
-      @display.print_colorised_text("The code was:\n", :green)
-      @maker.print_code
-      print "\n"
+      @display.game_over('MAKER')
+      @display.reveal_code(@maker)
     else
-      @display.print_colorised_text("#{@turns} guesses remaining\n", :red)
+      @display.turns_remaining(@turns)
     end
   end
 
   # Ask player whether to play again
   def quit?
-    prompt = "Do you want to play again? (Y / N)\n"
-    reprompt = "I didn't quite catch that. Do you want to play again? (Y / N)\n"
-    @input.yes_no(prompt, reprompt) == false
+    @input.yes_no(
+      @display.text_content[:play_again_prompt],
+      @display.text_content[:play_again_reprompt],
+    ) == false
   end
 end

@@ -2,6 +2,8 @@
 
 # Contains methods for controlling display
 class Display
+  attr_reader :text_content
+
   SLEEP_TIME = 0.1
 
   def initialize
@@ -18,26 +20,34 @@ class Display
       'neutral' => "\e[0m", # Reset
     }
     @text_colours = { green: "\e[32m", red: "\e[31m" }
-  end
-
-  # Prompt player to input a guess
-  def prompt_guess
-    print_colorised_text('Try to guess the code: ', :green)
-  end
-
-  # Report invalid guess
-  def invalid_guess
-    print_colorised_text("Invalid guess. Try again.\n", :red)
-  end
-
-  # Prompt player to input a code
-  def prompt_code
-    print_colorised_text('Choose a code: ', :green)
-  end
-
-  # Report invalid code
-  def invalid_code
-    print_colorised_text("Invalid code. Try again.\n", :red)
+    @text_content = {
+      guess_prompt: 'Try to guess the code: ',
+      guess_reprompt: "Invalid guess. Try again.\n",
+      code_prompt: 'Choose a code: ',
+      code_reprompt: "Invalid code. Try again.\n",
+      play_again_prompt: "Do you want to play again? (Y / N)\n",
+      play_again_reprompt:
+        "I didn't quite catch that. Do you want to play again? (Y / N)\n",
+      intro_prompt: "Do you want to see the instructions? (Y / N)\n",
+      intro_reprompt:
+        "I didn't quite catch that. Do you want to see the instructions? (Y / N)\n",
+      intro: "\n\nWELCOME TO MASTERMIND\n\n------------------\n\n",
+      game_start: ["\nLET'S PLAY!\n\n", "\n------------------\n\n"],
+      instructions: [
+        "INSTRUCTIONS:\n",
+        "The Codemaker selects a 4-digit code, using numbers from 1 - 6:\n",
+        "(the same number can be used more than once).\n",
+        "Each turn, the Codebreaker tries to guess the code by inputting 4 digits.\n" \
+          "(Just type them and press enter. They can be separated by spaces, commas, or not at all.)\n",
+        "Then, the Codemaker provides a hint:\n",
+        "\"B\" indicates the correct digit in the correct position.\n" \
+          "\"W\" indicates a correct digit, but in the wrong position.\n" \
+          "But remember, the hints are not in order.\n" \
+          "For example, a hint of \"B\" means that you guessed one digit correctly - but it doesn't tell you which.",
+      ],
+      confirm_continue: "\nPress ENTER to continue...\n",
+      winner: ["\n------------------\n", " WINS!\n------------------\n\n"],
+    }
   end
 
   # Colorise a set of pins (guess or hint)
@@ -77,65 +87,69 @@ class Display
   end
 
   def confirm_continue
-    print_colorised_text("\nPress ENTER to continue...\n", :green)
+    print_colorised_text(text_content[:confirm_continue], :green)
     gets
     clear_preceding
     clear_preceding
   end
 
-  # Display intro to the game
-  def display_intro
-    print_colorised_text(
-      "\n\nWELCOME TO MASTERMIND\n\n------------------\n\n",
-      :green,
-    )
+  # Display game instructions
+  def instructions
+    print_colorised_text(text_content[:instructions][0], :green)
     confirm_continue
-    print_colorised_text("INSTRUCTIONS:\n", :green)
-    confirm_continue
-    print_colorised_text(
-      "The Codemaker selects a 4-digit code, using numbers from 1 - 6:\n",
-      :green,
-    )
+    print_colorised_text(text_content[:instructions][1], :green)
     print_colorised([1, 2, 3, 4, 5, 6])
-    print_colorised_text(
-      "(the same number can be used more than once).\n",
-      :green,
-    )
+    print_colorised_text(text_content[:instructions][2], :green)
     confirm_continue
-    print_colorised_text(
-      "Each turn, the Codebreaker tries to guess the code by inputting 4 digits.\n" \
-        "(Just type them and press enter. They can be separated by spaces, commas, or not at all.)\n",
-      :green,
-    )
+    print_colorised_text(text_content[:instructions][3], :green)
     confirm_continue
-    print_colorised_text("Then, the Codemaker provides a hint:\n", :green)
+    print_colorised_text(text_content[:instructions][4], :green)
     print_colorised(%w[B B W W])
-    print_colorised_text(
-      "\"B\" indicates the correct digit in the correct position.\n" \
-        "\"W\" indicates a correct digit, but in the wrong position.\n" \
-        "But remember, the hints are not in order.\n" \
-        "For example, a hint of \"B\" means that you guessed one digit correctly - but it doesn't tell you which.",
-      :green,
-    )
+    print_colorised_text(text_content[:instructions][5], :green)
     confirm_continue
-    print_colorised_text("\nARE YOU READY TO PLAY?\n\n", :green)
-    confirm_continue
-    print_colorised_text("\n------------------\n\n", :green)
   end
 
+  # Display intro to the game
+  def intro
+    print_colorised_text(text_content[:intro], :green)
+  end
+
+  # Display game start text
+  def game_start
+    print_colorised_text(text_content[:game_start][0], :green)
+    confirm_continue
+  end
+
+  # Display generating code text
   def generating_code
-    print_colorised_text('Generating code', :green)
-    sleep(SLEEP_TIME)
-    clear_current
-    print_colorised_text('Generating code.', :green)
-    sleep(SLEEP_TIME)
-    clear_current
-    print_colorised_text('Generating code..', :green)
-    sleep(SLEEP_TIME)
-    clear_current
-    print_colorised_text('Generating code...', :green)
-    sleep(SLEEP_TIME)
-    clear_current
+    i = 0
+    4.times do
+      text = 'Generating code' + ('.' * i)
+      print_colorised_text(text, :green)
+      sleep(SLEEP_TIME)
+      clear_current
+      i += 1
+    end
     print_colorised_text("Code complete!\n\n", :green)
+  end
+
+  # Display game over text
+  def game_over(winner)
+    print_colorised_text(
+      "#{text_content[:winner][0]}#{winner}#{text_content[:winner][1]}",
+      :green,
+    )
+  end
+
+  # Reveal the code
+  def reveal_code(maker)
+    print_colorised_text("The code was:\n", :green)
+    maker.print_code
+    print "\n"
+  end
+
+  # Show number of turns remaining
+  def turns_remaining(turns)
+    print_colorised_text("#{turns} guesses remaining\n", :red)
   end
 end

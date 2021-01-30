@@ -12,11 +12,11 @@ class Input
   end
 
   # Prompt the user for a code until valid code received
-  def prompt_code(is_guess)
-    is_guess ? @display.prompt_guess : @display.prompt_code
+  def prompt_code(prompt, reprompt)
+    @display.print_colorised_text(prompt, :green)
     code = get_code
     until valid_code?(code)
-      is_guess ? @display.invalid_guess : @display.invalid_code
+      @display.print_colorised_text(reprompt, :red)
       code = get_code
     end
     code_to_ints(code)
@@ -43,7 +43,7 @@ class Input
     @display.print_colorised_text(prompt, :green)
     answer = gets.chomp.downcase
     until (answer == keys[:yes] || answer == keys[:no])
-      @display.print_colorised_text(reprompt, :green)
+      @display.print_colorised_text(reprompt, :red)
       answer = gets.chomp.downcase
     end
     answer == keys[:yes]
