@@ -30,6 +30,16 @@ class Display
     print_colorised_text("Invalid guess. Try again.\n", :red)
   end
 
+  # Prompt player to input a code
+  def prompt_code
+    print_colorised_text('Choose a code: ', :green)
+  end
+
+  # Report invalid code
+  def invalid_code
+    print_colorised_text("Invalid code. Try again.\n", :red)
+  end
+
   # Colorise a set of pins (guess or hint)
   def colorise_output(pins_array)
     pins_array.map do |pin|

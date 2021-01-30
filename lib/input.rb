@@ -12,11 +12,11 @@ class Input
   end
 
   # Prompt the user for a code until valid code received
-  def prompt_code
-    @display.prompt_guess
+  def prompt_code(is_guess)
+    is_guess ? @display.prompt_guess : @display.prompt_code
     code = get_code
     until valid_code?(code)
-      @display.invalid_guess
+      is_guess ? @display.invalid_guess : @display.invalid_code
       code = get_code
     end
     code_to_ints(code)

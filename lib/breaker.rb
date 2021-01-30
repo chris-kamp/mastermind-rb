@@ -21,7 +21,7 @@ class Breaker
       prune_codes(@guesses.last) unless @guesses.empty?
       guess = @ai_controller.guess(@hints, @guess_space, @code_space)
     else
-      guess = @input.prompt_code
+      guess = @input.prompt_code(true)
     end
     @guesses.push(guess)
     guess

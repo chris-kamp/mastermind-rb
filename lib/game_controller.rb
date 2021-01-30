@@ -11,14 +11,15 @@ class GameController
     @ai_controller = AIController.new
     @input = Input.new
     @display = Display.new
-    @breaker = Breaker.new(false, @input, @ai_controller, @display)
-    @maker = Maker.new(@ai_controller, @display)
+    @breaker = Breaker.new(true, @input, @ai_controller, @display)
+    @maker = Maker.new(false, @input, @ai_controller, @display)
     @turns = 8
     @game_over = false
   end
 
   def game_loop
     @display.display_intro
+    @maker.select_code
     advance_turn until @game_over
   end
 
@@ -54,7 +55,7 @@ class GameController
         :green,
       )
       @display.print_colorised_text("The code was:\n", :green)
-      @display.print_colorised(@maker.code)
+      @maker.print_code
       print "\n"
     else
       @display.print_colorised_text("#{@turns} guesses remaining\n", :red)
