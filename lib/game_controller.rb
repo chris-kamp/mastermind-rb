@@ -64,20 +64,8 @@ class GameController
 
   # Ask player whether to play again
   def quit?
-    @display.print_colorised_text(
-      "Do you want to play again? (Y / N)\n",
-      :green,
-    )
-    yes = 'y'
-    no = 'n'
-    answer = gets.chomp.downcase
-    until (answer == yes || answer == no)
-      @display.print_colorised_text(
-        "I didn't quite catch that. Do you want to play again? (Y / N)\n",
-        :green,
-      )
-      answer = gets.chomp.downcase
-    end
-    answer == no
+    prompt = "Do you want to play again? (Y / N)\n"
+    reprompt = "I didn't quite catch that. Do you want to play again? (Y / N)\n"
+    @input.yes_no(prompt, reprompt) == false
   end
 end

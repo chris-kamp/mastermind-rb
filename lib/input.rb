@@ -36,4 +36,16 @@ class Input
   def code_to_ints(code)
     code.map { |pin| Integer(pin) }
   end
+
+  # Ask the player a yes or no question
+  def yes_no(prompt, reprompt)
+    keys = { yes: 'y', no: 'n' }
+    @display.print_colorised_text(prompt, :green)
+    answer = gets.chomp.downcase
+    until (answer == keys[:yes] || answer == keys[:no])
+      @display.print_colorised_text(reprompt, :green)
+      answer = gets.chomp.downcase
+    end
+    answer == keys[:yes]
+  end
 end
