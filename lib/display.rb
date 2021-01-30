@@ -47,6 +47,12 @@ class Display
       ],
       confirm_continue: "\nPress ENTER to continue...\n",
       winner: ["\n------------------\n", " WINS!\n------------------\n\n"],
+      breaker_ai_prompt: "Is the Codebreaker a HUMAN PLAYER? (Y / N)\n",
+      breaker_ai_reprompt:
+        "I didn't quite catch that. Is the Codebreaker a HUMAN PLAYER? (Y / N)\n",
+      maker_ai_prompt: "Is the Codemaker a HUMAN PLAYER? (Y / N)\n",
+      maker_ai_reprompt:
+        "I didn't quite catch that. Is the Codemaker a HUMAN PLAYER? (Y / N)\n",
     }
   end
 

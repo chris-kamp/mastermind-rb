@@ -11,8 +11,6 @@ class GameController
     @ai_controller = AIController.new
     @input = Input.new
     @display = Display.new
-    @breaker = Breaker.new(false, @input, @ai_controller, @display)
-    @maker = Maker.new(true, @input, @ai_controller, @display)
     @turns = 8
     @game_over = false
   end
@@ -25,6 +23,10 @@ class GameController
        )
       @display.instructions
     end
+    ai_settings = @input.player_setup
+    @breaker =
+      Breaker.new(ai_settings[:breaker], @input, @ai_controller, @display)
+    @maker = Maker.new(ai_settings[:maker], @input, @ai_controller, @display)
     @display.game_start
     @maker.select_code
     advance_turn until @game_over

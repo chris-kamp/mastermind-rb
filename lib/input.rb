@@ -48,4 +48,18 @@ class Input
     end
     answer == keys[:yes]
   end
+
+  def player_setup
+    breaker_ai =
+      yes_no(
+        @display.text_content[:breaker_ai_prompt],
+        @display.text_content[:breaker_ai_reprompt],
+      )
+    maker_ai =
+      yes_no(
+        @display.text_content[:maker_ai_prompt],
+        @display.text_content[:maker_ai_reprompt],
+      )
+    { breaker: !breaker_ai, maker: !maker_ai }
+  end
 end
