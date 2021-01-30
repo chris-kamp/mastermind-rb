@@ -2,12 +2,16 @@
 require './lib/maker'
 require './lib/breaker'
 require './lib/display'
+require './lib/input'
+require './lib/ai_controller'
 
 # game flow controller
 class GameController
   def initialize
-    @maker = Maker.new
-    @breaker = Breaker.new(true)
+    @ai_controller = AIController.new
+    @input = Input.new
+    @breaker = Breaker.new(true, @input, @ai_controller)
+    @maker = Maker.new(@ai_controller)
     @display = Display.new
     @turns = 8
     @game_over = false
@@ -19,8 +23,8 @@ class GameController
   end
 
   def advance_turn
-    guess = @breaker.guess_code
-    hint = @maker.hint(guess, @maker.code)
+    guess = @breaker.take_turn
+    hint = @maker.hint(guess)
     @breaker.receive_hint(hint)
     @display.display_turn(guess, hint)
     @turns -= 1

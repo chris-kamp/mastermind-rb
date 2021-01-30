@@ -2,7 +2,7 @@
 
 # Contains methods for controlling display
 class Display
-  SLEEP_TIME = 1
+  SLEEP_TIME = 0.1
 
   def initialize
     @colour_codes = {
