@@ -12,7 +12,12 @@ class Maker
 
   # Get a code from the AI or the human player
   def select_code
-    @code = @is_AI ? @ai_controller.generate_code : human_select_code
+    if @is_AI
+      @display.generating_code
+      @code = @ai_controller.generate_code
+    else
+      @code = human_select_code
+    end
   end
 
   # Allow a human player to select a code

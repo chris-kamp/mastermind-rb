@@ -121,6 +121,9 @@ class Display
     print_colorised_text("\nARE YOU READY TO PLAY?\n\n", :green)
     confirm_continue
     print_colorised_text("\n------------------\n\n", :green)
+  end
+
+  def generating_code
     print_colorised_text('Generating code', :green)
     sleep(SLEEP_TIME)
     clear_current
