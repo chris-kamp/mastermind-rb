@@ -21,7 +21,7 @@ class Breaker
       prune_codes(@guesses.last) unless @guesses.empty?
       guess = @ai_controller.guess(@hints, @guess_space, @code_space)
     else
-      guess = guess_to_int(human_turn)
+      guess = @input.prompt_code
     end
     @guesses.push(guess)
     guess
@@ -33,28 +33,8 @@ class Breaker
       @ai_controller.select_possible_codes(@code_space, guess, @hints.last)
   end
 
-  # Prompt the user for a guess until valid guess received
-  def human_turn
-    @display.prompt_guess
-    guess = @input.get_guess
-    until valid_guess?(guess)
-      @display.invalid_guess
-      guess = @input.get_guess
-    end
-    guess
-  end
-
-  def guess_to_int(guess)
-    guess.map { |pin| Integer(pin) }
-  end
-
   # Receive a hint from the codemaker
   def receive_hint(hint)
     @hints.push(hint)
-  end
-
-  # Correct number of pins guessed, and all within valid range?
-  def valid_guess?(guess)
-    guess.is_a?(Array) && guess.all?(/[1-6]/) && guess.length == 4
   end
 end
