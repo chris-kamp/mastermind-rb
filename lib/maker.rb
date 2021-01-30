@@ -4,7 +4,8 @@
 class Maker
   attr_reader :code
 
-  def initialize(ai_controller)
+  def initialize(ai_controller, display)
+    @display = display
     @ai_controller = ai_controller
     @code = generate_code
   end

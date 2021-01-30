@@ -10,9 +10,9 @@ class GameController
   def initialize
     @ai_controller = AIController.new
     @input = Input.new
-    @breaker = Breaker.new(true, @input, @ai_controller)
-    @maker = Maker.new(@ai_controller)
     @display = Display.new
+    @breaker = Breaker.new(false, @input, @ai_controller, @display)
+    @maker = Maker.new(@ai_controller, @display)
     @turns = 8
     @game_over = false
   end

@@ -5,10 +5,10 @@ require './lib/maker'
 
 # Human player or AI who tries to break the code
 class Breaker
-  def initialize(is_AI, input, ai_controller)
+  def initialize(is_AI, input, ai_controller, display)
     @input = input
     @ai_controller = ai_controller
-    @display = Display.new
+    @display = display
     @is_AI = is_AI
     @hints = []
     @guesses = []
@@ -21,7 +21,7 @@ class Breaker
       prune_codes(@guesses.last) unless @guesses.empty?
       guess = @ai_controller.guess(@hints, @guess_space, @code_space)
     else
-      guess = human_guess
+      guess = guess_to_int(human_turn)
     end
     @guesses.push(guess)
     guess
@@ -33,18 +33,18 @@ class Breaker
       @ai_controller.select_possible_codes(@code_space, guess, @hints.last)
   end
 
-  # Prompt for guess via stdin
-  def human_guess
-    @display.print_colorised_text('Try to guess the code: ', :green)
-    guess = sanitise_guess(gets)
-
-    # Keep prompting until valid guess received
+  # Prompt the user for a guess until valid guess received
+  def human_turn
+    @display.prompt_guess
+    guess = @input.get_guess
     until valid_guess?(guess)
-      @display.print_colorised_text("Invalid guess. Try again.\n", :red)
-      guess = sanitise_guess(gets)
+      @display.invalid_guess
+      guess = @input.get_guess
     end
+    guess
+  end
 
-    # Convert guess to int. Note that valid_guess? should ensure this is safe.
+  def guess_to_int(guess)
     guess.map { |pin| Integer(pin) }
   end
 
@@ -53,13 +53,8 @@ class Breaker
     @hints.push(hint)
   end
 
-  # Convert guess to array, removing comma and space separators
-  def sanitise_guess(guess)
-    guess.chomp.split('') - [' ', ',']
-  end
-
   # Correct number of pins guessed, and all within valid range?
   def valid_guess?(guess)
-    guess.all?(/[1-6]/) && guess.length == 4
+    guess.is_a?(Array) && guess.all?(/[1-6]/) && guess.length == 4
   end
 end

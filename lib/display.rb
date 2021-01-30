@@ -20,6 +20,16 @@ class Display
     @text_colours = { green: "\e[32m", red: "\e[31m" }
   end
 
+  # Prompt player to input a guess
+  def prompt_guess
+    print_colorised_text('Try to guess the code: ', :green)
+  end
+
+  # Report invalid guess
+  def invalid_guess
+    print_colorised_text("Invalid guess. Try again.\n", :red)
+  end
+
   # Colorise a set of pins (guess or hint)
   def colorise_output(pins_array)
     pins_array.map do |pin|
