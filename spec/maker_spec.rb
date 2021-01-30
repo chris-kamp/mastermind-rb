@@ -21,7 +21,7 @@ describe Maker do
     before(:example) { @maker = Maker.new }
     it 'Identifies partially correct guesses' do
       code = [1, 2, 3, 4]
-      expect(@maker.hint([1, 2, 4, 5], code)).to eql(%w[B B W])
+      expect(@maker.hint([1, 2, 4, 5], code)).to eql(%w[B B W X])
     end
     it 'Identifies correct guesses' do
       code = [2, 3, 5, 4]
@@ -29,11 +29,11 @@ describe Maker do
     end
     it 'Identifies incorrect guesses' do
       code = [1, 2, 1, 2]
-      expect(@maker.hint([3, 4, 5, 6], code)).to eql([])
+      expect(@maker.hint([3, 4, 5, 6], code)).to eql(%w[X X X X])
     end
     it 'Works for repetitive codes' do
       code = [1, 2, 1, 1]
-      expect(@maker.hint([1, 1, 2, 2], code)).to eql(%w[B W W])
+      expect(@maker.hint([1, 1, 2, 2], code)).to eql(%w[B W W X])
     end
   end
 end

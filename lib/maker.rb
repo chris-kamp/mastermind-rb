@@ -15,6 +15,7 @@ class Maker
     code
   end
 
+  # Given a guess and a code, generate a hint for the guesser
   def hint(guess, code)
     hint = []
     unmatched_guesses = []
@@ -34,9 +35,7 @@ class Maker
         unmatched_code.slice!(unmatched_code.index(pin))
       end
     end
+    (4 - hint.length).times { hint.push 'X' }
     hint
   end
 end
-
-# maker = Maker.new
-# p maker.code

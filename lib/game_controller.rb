@@ -7,7 +7,7 @@ require './lib/display'
 class GameController
   def initialize
     @maker = Maker.new
-    @breaker = Breaker.new
+    @breaker = Breaker.new(true)
     @display = Display.new
     @turns = 8
     @game_over = false
@@ -19,9 +19,9 @@ class GameController
   end
 
   def advance_turn
-    # Needs to change to a display.hint method
     guess = @breaker.guess_code
     hint = @maker.hint(guess, @maker.code)
+    @breaker.receive_hint(hint)
     @display.display_turn(guess, hint)
     @turns -= 1
     post_turn(hint)

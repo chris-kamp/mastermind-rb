@@ -2,7 +2,7 @@
 
 # Contains methods for controlling display
 class Display
-  # to do
+  SLEEP_TIME = 1
 
   def initialize
     @colour_codes = {
@@ -12,8 +12,9 @@ class Display
       4 => "\e[44m", # Blue
       5 => "\e[45m", # Magenta
       6 => "\e[46m", # Cyan
-      'B' => "\e[100m", # Dark grey
+      'B' => "\e[40m", # Black
       'W' => "\e[107m\e[30m", # White with black text
+      'X' => "\e[100m", # Dark grey
       'neutral' => "\e[0m", # Reset
     }
     @text_colours = { green: "\e[32m", red: "\e[31m" }
@@ -101,16 +102,16 @@ class Display
     confirm_continue
     print_colorised_text("\n------------------\n\n", :green)
     print_colorised_text('Generating code', :green)
-    sleep(1)
+    sleep(SLEEP_TIME)
     clear_current
     print_colorised_text('Generating code.', :green)
-    sleep(1)
+    sleep(SLEEP_TIME)
     clear_current
     print_colorised_text('Generating code..', :green)
-    sleep(1)
+    sleep(SLEEP_TIME)
     clear_current
     print_colorised_text('Generating code...', :green)
-    sleep(1)
+    sleep(SLEEP_TIME)
     clear_current
     print_colorised_text("Code complete!\n\n", :green)
   end
