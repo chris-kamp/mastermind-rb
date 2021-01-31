@@ -4,7 +4,7 @@
 class Display
   attr_reader :text_content
 
-  SLEEP_TIME = 0.1
+  SLEEP_TIME = 1
 
   def initialize
     @bg_colours = {
