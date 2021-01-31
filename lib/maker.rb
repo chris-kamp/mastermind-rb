@@ -33,8 +33,8 @@ class Maker
     @ai_controller.hint(guess, @code)
   end
 
-  # Print the code
-  def print_code
-    @display.print_colorised(@code)
+  # Reveal the code
+  def reveal_code
+    @display.print_colourised_code(@code)
   end
 end

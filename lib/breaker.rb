@@ -16,10 +16,15 @@ class Breaker
     @code_space = @ai_controller.generate_permutations([1, 2, 3, 4, 5, 6], 4)
   end
 
+  # Get a guess from the Codebreaker (human or AI)
   def take_turn
     if @is_AI
+      @display.ai_guessing
+      start = Time.now
       prune_codes(@guesses.last) unless @guesses.empty?
       guess = @ai_controller.guess(@hints, @guess_space, @code_space)
+      time_taken = Time.now - start
+      sleep(3 - time_taken) if time_taken < 3
     else
       guess =
         @input.prompt_code(
@@ -31,6 +36,7 @@ class Breaker
     guess
   end
 
+  # Remove impossible codes and guesses that have already been taken
   def prune_codes(guess)
     @guess_space.reject! { |option| option == guess }
     @code_space =

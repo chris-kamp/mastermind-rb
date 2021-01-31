@@ -45,11 +45,6 @@ describe AIController do
       ).to eql([[1, 3, 3, 6]])
     end
   end
-  describe '#calculate_min_reduction' do
-    before(:example) { @ai_controller = AIController.new }
-    xit 'Calculates minimum reduction' do
-    end
-  end
   describe '#generate_code' do
     before(:example) { @ai_controller = AIController.new }
     it 'Returns an array' do

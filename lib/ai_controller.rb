@@ -72,7 +72,7 @@ class AIController
     hint
   end
 
-  # generate a code of length 4 with 6 options
+  # Generate a code of length 4 with 6 options
   def generate_code
     code = []
     4.times { code.push rand(1..6) }

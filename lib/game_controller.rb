@@ -5,7 +5,7 @@ require './lib/display'
 require './lib/input'
 require './lib/ai_controller'
 
-# game flow controller
+# Controls the flow of a single game
 class GameController
   def initialize
     @ai_controller = AIController.new
@@ -15,6 +15,7 @@ class GameController
     @game_over = false
   end
 
+  # Main game loop
   def game_loop
     @display.intro
     if @input.yes_no(
@@ -32,6 +33,7 @@ class GameController
     advance_turn until @game_over
   end
 
+  # Each player takes their turn
   def advance_turn
     guess = @breaker.take_turn
     hint = @maker.hint(guess)
